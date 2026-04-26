@@ -58,8 +58,12 @@ class Enquete(db.Model):
     date_collecte = db.Column(db.DateTime, default=datetime.utcnow)
 
 with app.app_context():
-    db.create_all()
-
+    try:
+        db.create_all()
+        print("Base de données initialisée avec succès.")
+    except Exception as e:
+        print(f"Erreur lors de l'initialisationde de la base de données : {e}")
+        
 # ── Routes ─────────────────────────────────────────────────────────
 
 @app.route('/')
