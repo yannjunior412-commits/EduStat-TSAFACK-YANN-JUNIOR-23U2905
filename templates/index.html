@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Carte identité étudiant -->
+<div class="card shadow mb-4" style="background:linear-gradient(135deg,#0d2137,#2d6a9f);color:white;border-radius:16px;">
+  <div class="card-body py-4 px-4">
+    <div class="row align-items-center g-3">
+      <div class="col-auto">
+        <div style="width:68px;height:68px;background:rgba(255,255,255,0.15);
+                    border-radius:50%;border:2px solid rgba(255,255,255,0.3);
+                    display:flex;align-items:center;justify-content:center;font-size:2rem;">🎓</div>
+      </div>
+      <div class="col">
+        <div class="fs-4 fw-bold">{{ etudiant.prenom }} {{ etudiant.nom }}</div>
+        <div class="d-flex flex-wrap gap-2 mt-2">
+          <span class="badge" style="background:rgba(255,255,255,0.2);font-size:0.8rem;padding:5px 12px;">
+            <i class="bi bi-person-badge me-1"></i>{{ etudiant.matricule }}
+          </span>
+          <span class="badge" style="background:rgba(255,255,255,0.2);font-size:0.8rem;padding:5px 12px;">
+            <i class="bi bi-mortarboard me-1"></i>{{ etudiant.filiere }}
+          </span>
+          <span class="badge" style="background:rgba(255,255,255,0.2);font-size:0.8rem;padding:5px 12px;">
+            <i class="bi bi-layers me-1"></i>{{ etudiant.niveau }}
+          </span>
+          <span class="badge" style="background:rgba(255,255,255,0.2);font-size:0.8rem;padding:5px 12px;">
+            <i class="bi bi-calendar3 me-1"></i>{{ etudiant.annee }}
+          </span>
+        </div>
+        <div class="mt-2 opacity-75" style="font-size:0.83rem;">
+          <i class="bi bi-journal-code me-1"></i>
+          TP INF232 — EC2 · Application de collecte et d'analyse descriptive des données universitaires
+        </div>
+      </div>
+      <div class="col-auto text-end">
+        <div class="badge bg-warning text-dark fw-bold" style="font-size:1rem;padding:10px 18px;border-radius:10px;">
+          TP INF232
+        </div>
+        <div class="text-white-50 mt-1" style="font-size:0.75rem;">EC2</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Statistiques rapides -->
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="card shadow-sm p-3" style="border-left:4px solid #2d6a9f;">
+      <div class="text-muted small">Total enquêtes enregistrées</div>
+      <div class="fs-2 fw-bold text-primary">{{ total }}</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm p-3" style="border-left:4px solid #27ae60;">
+      <div class="text-muted small">Secteur d'activité</div>
+      <div class="fs-5 fw-bold text-success">Éducation universitaire</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm p-3" style="border-left:4px solid #e67e22;">
+      <div class="text-muted small">Stack technique</div>
+      <div class="fw-bold" style="color:#e67e22;font-size:0.9rem;">Railway · Supabase · Vercel</div>
+    </div>
+  </div>
+</div>
+
+<!-- Dernières saisies -->
+{% if recents %}
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h6 class="fw-bold mb-3" style="color:#1a3c5e;"><i class="bi bi-clock-history me-1"></i>5 dernières saisies</h6>
+    <div class="table-responsive">
+      <table class="table table-sm table-hover mb-0" style="font-size:0.85rem;">
+        <thead style="background:#f0f4f8;">
+          <tr>
+            <th>Nom & Prénom</th><th>Filière</th><th>Niveau</th><th>Matière</th><th>Note</th><th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in recents %}
+          <tr>
+            <td class="fw-semibold">{{ d.nom }} {{ d.prenom }}</td>
+            <td>{{ d.filiere }}</td>
+            <td>{{ d.niveau_univ }}</td>
+            <td>{{ d.matiere }}</td>
+            <td>
+              <span class="badge {% if d.note >= 10 %}bg-success{% else %}bg-danger{% endif %}">
+                {{ d.note }}/20
+              </span>
+            </td>
+            <td class="text-muted">{{ d.date_collecte.strftime('%d/%m/%Y') }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<!-- Actions -->
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="card shadow-sm h-100" style="border-radius:14px;">
+      <div class="card-body p-4">
+        <div style="font-size:2rem;" class="mb-3">📝</div>
+        <h5 class="fw-bold">Saisir une enquête</h5>
+        <p class="text-muted">Enregistrez les données académiques et les notes d'un étudiant.</p>
+        <a href="/formulaire" class="btn btn-primary px-4">
+          <i class="bi bi-pencil-square me-1"></i>Commencer
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm h-100" style="border-radius:14px;">
+      <div class="card-body p-4">
+        <div style="font-size:2rem;" class="mb-3">📊</div>
+        <h5 class="fw-bold">Voir les statistiques</h5>
+        <p class="text-muted">Consultez l'analyse descriptive complète avec graphiques dynamiques.</p>
+        <a href="/dashboard" class="btn btn-success px-4">
+          <i class="bi bi-bar-chart me-1"></i>Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

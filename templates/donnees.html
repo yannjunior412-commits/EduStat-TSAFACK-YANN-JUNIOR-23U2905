@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h4 class="fw-bold mb-0" style="color:#1a3c5e;"><i class="bi bi-table me-2"></i>Données collectées</h4>
+    <div class="text-muted small">{{ etudiant.prenom }} {{ etudiant.nom }} — {{ etudiant.matricule }}</div>
+  </div>
+  <div class="d-flex gap-2">
+    <a href="/export/csv" class="btn btn-outline-secondary btn-sm"><i class="bi bi-filetype-csv me-1"></i>CSV</a>
+    <a href="/export/excel" class="btn btn-outline-success btn-sm"><i class="bi bi-file-earmark-excel me-1"></i>Excel</a>
+  </div>
+</div>
+
+<div class="card shadow-sm" style="border-radius:14px;overflow:hidden;">
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered mb-0" style="font-size:0.82rem;">
+      <thead style="background:linear-gradient(90deg,#0d2137,#1a3c5e);color:white;">
+        <tr>
+          <th class="py-3">#</th>
+          <th>Nom & Prénom</th>
+          <th>Sexe</th>
+          <th>Université</th>
+          <th>Faculté</th>
+          <th>Filière</th>
+          <th>Niveau</th>
+          <th>Matière</th>
+          <th>Note</th>
+          <th>Région</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in data.items %}
+        <tr>
+          <td class="text-muted">{{ d.id }}</td>
+          <td class="fw-semibold">{{ d.nom }} {{ d.prenom }}</td>
+          <td><i class="bi bi-person{% if d.sexe=='Féminin' %}-dress{% endif %} me-1"></i>{{ d.sexe }}</td>
+          <td style="max-width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="{{ d.universite }}">{{ d.universite }}</td>
+          <td style="max-width:90px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="{{ d.faculte }}">{{ d.faculte }}</td>
+          <td><span class="badge bg-light text-dark border" style="font-size:0.72rem;">{{ d.filiere }}</span></td>
+          <td><span class="badge" style="background:#e8f4fd;color:#1a3c5e;font-size:0.72rem;">{{ d.niveau_univ }}</span></td>
+          <td>{{ d.matiere }}</td>
+          <td>
+            <span class="badge {% if d.note>=14 %}bg-success{% elif d.note>=10 %}bg-primary{% else %}bg-danger{% endif %}">
+              {{ d.note }}/20
+            </span>
+          </td>
+          <td>{{ d.region }}</td>
+          <td class="text-muted">{{ d.date_collecte.strftime('%d/%m/%Y') }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="11" class="text-center py-5 text-muted">
+            <div style="font-size:2rem;">📭</div>
+            <div class="mt-2">Aucune donnée saisie.</div>
+            <a href="/formulaire" class="btn btn-primary btn-sm mt-3">Saisir des données</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% if data.pages > 1 %}
+<nav class="mt-4">
+  <ul class="pagination justify-content-center">
+    {% if data.has_prev %}
+    <li class="page-item"><a class="page-link" href="?page={{ data.prev_num }}"><i class="bi bi-chevron-left"></i></a></li>
+    {% endif %}
+    <li class="page-item disabled"><span class="page-link">Page {{ data.page }} / {{ data.pages }}</span></li>
+    {% if data.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{ data.next_num }}"><i class="bi bi-chevron-right"></i></a></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+{% endblock %}

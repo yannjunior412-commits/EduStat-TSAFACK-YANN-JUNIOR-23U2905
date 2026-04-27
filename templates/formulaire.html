@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-9 col-lg-8">
+
+    {% if request.args.get('success') %}
+    <div class="alert alert-success alert-dismissible fade show shadow-sm">
+      <i class="bi bi-check-circle-fill me-2"></i><strong>Succès !</strong> Données enregistrées.
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endif %}
+    {% if erreur is defined and erreur %}
+    <div class="alert alert-danger">
+      <i class="bi bi-exclamation-triangle me-2"></i>Erreur : {{ erreur }}
+    </div>
+    {% endif %}
+
+    <div class="card shadow" style="border-radius:16px;overflow:hidden;">
+      <div class="card-header border-0 py-3 px-4"
+           style="background:linear-gradient(90deg,#0d2137,#1a3c5e);">
+        <h5 class="mb-0 text-white fw-bold">
+          <i class="bi bi-pencil-square me-2"></i>Formulaire de collecte des données
+        </h5>
+        <div class="text-white-50 small mt-1">
+          {{ etudiant.prenom }} {{ etudiant.nom }} — {{ etudiant.matricule }} — TP INF232
+        </div>
+      </div>
+      <div class="card-body p-4">
+        <form method="POST" novalidate>
+
+          <!-- SECTION 1 : IDENTITÉ -->
+          <div class="mb-4">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <div style="width:30px;height:30px;background:#1a3c5e;border-radius:50%;
+                          display:flex;align-items:center;justify-content:center;
+                          color:white;font-weight:bold;">1</div>
+              <h6 class="fw-bold mb-0" style="color:#1a3c5e;">Identité de l'étudiant(e)</h6>
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold"><i class="bi bi-person me-1 text-primary"></i>Nom</label>
+                <input type="text" name="nom" class="form-control" placeholder="Ex : TSAFACK" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold"><i class="bi bi-person me-1 text-primary"></i>Prénom(s)</label>
+                <input type="text" name="prenom" class="form-control" placeholder="Ex : Yann Junior" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold"><i class="bi bi-gender-ambiguous me-1 text-info"></i>Sexe</label>
+                <select name="sexe" class="form-select" required>
+                  <option value="">-- Sélectionner --</option>
+                  <option>Masculin</option>
+                  <option>Féminin</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold"><i class="bi bi-geo-alt me-1 text-danger"></i>Région d'origine</label>
+                <select name="region" class="form-select" required>
+                  <option value="">-- Sélectionner --</option>
+                  <option>Centre</option><option>Littoral</option><option>Ouest</option>
+                  <option>Nord</option><option>Sud</option><option>Est</option>
+                  <option>Adamaoua</option><option>Nord-Ouest</option>
+                  <option>Sud-Ouest</option><option>Extrême-Nord</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <!-- SECTION 2 : ACADÉMIQUE -->
+          <div class="mb-4">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <div style="width:30px;height:30px;background:#27ae60;border-radius:50%;
+                          display:flex;align-items:center;justify-content:center;
+                          color:white;font-weight:bold;">2</div>
+              <h6 class="fw-bold mb-0" style="color:#27ae60;">Informations académiques</h6>
+            </div>
+            <div class="row g-3">
+
+              <!-- Université -->
+              <div class="col-12">
+                <label class="form-label fw-semibold"><i class="bi bi-building me-1 text-primary"></i>Université</label>
+                <select name="universite" class="form-select" required>
+                  <option value="">-- Sélectionner l'université --</option>
+                  <optgroup label="Universités d'État du Cameroun">
+                    <option>Université de Yaoundé I</option>
+                    <option>Université de Yaoundé II (Soa)</option>
+                    <option>Université de Douala</option>
+                    <option>Université de Dschang</option>
+                    <option>Université de Buea</option>
+                    <option>Université de Ngaoundéré</option>
+                    <option>Université de Maroua</option>
+                    <option>Université de Bamenda</option>
+                  </optgroup>
+                  <optgroup label="Universités privées">
+                    <option>Université Catholique d'Afrique Centrale (UCAC)</option>
+                    <option>Institut Supérieur de Management (ISM)</option>
+                    <option>Université des Montagnes (UdM)</option>
+                    <option>Autre université privée</option>
+                  </optgroup>
+                </select>
+              </div>
+
+              <!-- Faculté -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold"><i class="bi bi-bank me-1 text-success"></i>Faculté / École</label>
+                <select name="faculte" class="form-select" required>
+                  <option value="">-- Sélectionner la faculté --</option>
+                  <optgroup label="Sciences & Technologie">
+                    <option>Faculté des Sciences (FS)</option>
+                    <option>Faculté des Sciences Exactes et Informatique (FSEI)</option>
+                    <option>Faculté des Sciences et Techniques (FST)</option>
+                    <option>École Nationale Supérieure Polytechnique (ENSP)</option>
+                    <option>Institut Universitaire de Technologie (IUT)</option>
+                  </optgroup>
+                  <optgroup label="Sciences Humaines">
+                    <option>Faculté des Lettres et Sciences Humaines (FLSH)</option>
+                    <option>Faculté des Sciences de l'Éducation (FSE)</option>
+                    <option>École Normale Supérieure (ENS)</option>
+                  </optgroup>
+                  <optgroup label="Droit & Économie">
+                    <option>Faculté des Sciences Juridiques et Politiques (FSJP)</option>
+                    <option>Faculté des Sciences Économiques et de Gestion (FSEG)</option>
+                  </optgroup>
+                  <optgroup label="Santé">
+                    <option>Faculté de Médecine et des Sciences Biomédicales (FMSB)</option>
+                    <option>Faculté des Sciences de la Santé (FASS)</option>
+                  </optgroup>
+                  <optgroup label="Autre"><option>Autre faculté</option></optgroup>
+                </select>
+              </div>
+
+              <!-- Filière -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold"><i class="bi bi-diagram-3 me-1 text-warning"></i>Filière / Spécialité</label>
+                <select name="filiere" class="form-select" required>
+                  <option value="">-- Sélectionner la filière --</option>
+                  <optgroup label="Informatique">
+                    <option>Informatique Fondamentale (INFO-FONDA)</option>
+                    <option>Informatique de Gestion (INFO-GEST)</option>
+                    <option>Génie Logiciel (GL)</option>
+                    <option>Réseaux et Télécommunications (RT)</option>
+                    <option>Intelligence Artificielle (IA)</option>
+                    <option>Sécurité Informatique (SI)</option>
+                  </optgroup>
+                  <optgroup label="Mathématiques">
+                    <option>Mathématiques Pures</option>
+                    <option>Mathématiques Appliquées</option>
+                    <option>Statistiques</option>
+                  </optgroup>
+                  <optgroup label="Sciences">
+                    <option>Physique</option><option>Chimie</option>
+                    <option>Biologie</option><option>Sciences de la Terre</option>
+                  </optgroup>
+                  <optgroup label="Gestion & Économie">
+                    <option>Comptabilité Finance</option>
+                    <option>Marketing Management</option>
+                    <option>Économie</option><option>Banque et Finance</option>
+                  </optgroup>
+                  <optgroup label="Droit">
+                    <option>Droit Privé</option><option>Droit Public</option>
+                    <option>Sciences Politiques</option>
+                  </optgroup>
+                  <optgroup label="Autres">
+                    <option>Lettres Modernes</option><option>Philosophie</option>
+                    <option>Histoire</option><option>Géographie</option>
+                    <option>Autre filière</option>
+                  </optgroup>
+                </select>
+              </div>
+
+              <!-- Niveau -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold"><i class="bi bi-layers me-1" style="color:#8e44ad;"></i>Niveau universitaire</label>
+                <select name="niveau_univ" class="form-select" required>
+                  <option value="">-- Sélectionner le niveau --</option>
+                  <optgroup label="Licence (LMD)">
+                    <option>Licence 1 (L1)</option>
+                    <option>Licence 2 (L2)</option>
+                    <option>Licence 3 (L3)</option>
+                  </optgroup>
+                  <optgroup label="Master (LMD)">
+                    <option>Master 1 (M1)</option>
+                    <option>Master 2 (M2)</option>
+                  </optgroup>
+                  <optgroup label="Doctorat">
+                    <option>Doctorat 1ère année</option>
+                    <option>Doctorat 2ème année</option>
+                    <option>Doctorat 3ème année</option>
+                  </optgroup>
+                  <optgroup label="Système classique">
+                    <option>1ère année</option><option>2ème année</option>
+                    <option>3ème année</option><option>4ème année</option>
+                    <option>5ème année</option>
+                  </optgroup>
+                </select>
+              </div>
+
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <!-- SECTION 3 : RÉSULTATS -->
+          <div class="mb-4">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <div style="width:30px;height:30px;background:#e67e22;border-radius:50%;
+                          display:flex;align-items:center;justify-content:center;
+                          color:white;font-weight:bold;">3</div>
+              <h6 class="fw-bold mb-0" style="color:#e67e22;">Résultats académiques</h6>
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold"><i class="bi bi-book me-1 text-warning"></i>Matière / UE</label>
+                <select name="matiere" class="form-select" required>
+                  <option value="">-- Sélectionner --</option>
+                  <optgroup label="Informatique">
+                    <option>Algorithmique et Structures de données</option>
+                    <option>Programmation (Python / Java / C)</option>
+                    <option>Base de données (SQL)</option>
+                    <option>Réseaux informatiques</option>
+                    <option>Systèmes d'exploitation</option>
+                    <option>Intelligence Artificielle</option>
+                    <option>Développement Web</option>
+                    <option>Sécurité informatique</option>
+                  </optgroup>
+                  <optgroup label="Mathématiques">
+                    <option>Analyse mathématique</option>
+                    <option>Algèbre linéaire</option>
+                    <option>Probabilités et Statistiques</option>
+                    <option>Mathématiques discrètes</option>
+                  </optgroup>
+                  <optgroup label="Sciences">
+                    <option>Physique générale</option>
+                    <option>Chimie générale</option>
+                    <option>Biologie cellulaire</option>
+                  </optgroup>
+                  <optgroup label="Autres">
+                    <option>Anglais technique</option>
+                    <option>Français académique</option>
+                    <option>Gestion et entrepreneuriat</option>
+                    <option>Autre matière / UE</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold"><i class="bi bi-123 me-1 text-danger"></i>Note obtenue (sur 20)</label>
+                <input type="number" name="note" class="form-control"
+                       min="0" max="20" step="0.25" placeholder="Ex : 14.5" required>
+                <div class="form-text"><i class="bi bi-info-circle"></i> Entre 0 et 20 (ex: 12.75)</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-primary btn-lg fw-bold py-3"
+                    style="border-radius:10px;background:linear-gradient(90deg,#1a3c5e,#2d6a9f);border:none;">
+              <i class="bi bi-save2-fill me-2"></i>Enregistrer les données
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

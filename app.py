@@ -25,13 +25,7 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
 }
 
 db = SQLAlchemy(app)
-with app.app_context():
-    try:
-        db.create_all()
-        print("Connexion à la base de données réussie.")
-    except Exception as e:
-        print(f"Avertissement : La base de données n'est pas accessible immediatement : {e}")
-        
+
 # ── Identité de l'étudiant ─────────────────────────────────────────
 ETUDIANT = {
     "nom"       : "TSAFACK",
@@ -63,8 +57,9 @@ class Enquete(db.Model):
     # Métadonnée
     date_collecte = db.Column(db.DateTime, default=datetime.utcnow)
 
-db.create_all()
-        
+with app.app_context():
+    db.create_all()
+
 # ── Routes ─────────────────────────────────────────────────────────
 
 @app.route('/')
