@@ -26,12 +26,7 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
 
 db = SQLAlchemy(app)
 
-with app.app_context():
-    try:
-        db.create_all()
-        print("Connexion réussie.")
-    except Exception as e:
-        print(f"Erreur de connexion (ignorée pour le build) : {e}")
+
 # ── Identité de l'étudiant ─────────────────────────────────────────
 ETUDIANT = {
     "nom"       : "TSAFACK",
@@ -64,7 +59,11 @@ class Enquete(db.Model):
     date_collecte = db.Column(db.DateTime, default=datetime.utcnow)
 
 with app.app_context():
-    db.create_all()
+    try:
+        db.create_all()
+        print("Connexion réussie.")
+    except Exception as e:
+        print(f"Erreur de connexion (ignorée pour le build) : {e}")
 
 # ── Routes ─────────────────────────────────────────────────────────
 
