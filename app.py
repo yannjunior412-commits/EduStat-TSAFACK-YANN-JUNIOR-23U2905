@@ -63,12 +63,7 @@ class Enquete(db.Model):
     # Métadonnée
     date_collecte = db.Column(db.DateTime, default=datetime.utcnow)
 
-with app.app_context():
-    try:
-        db.create_all()
-        print("Base de données initialisée avec succès.")
-    except Exception as e:
-        print(f"Erreur lors de l'initialisationde de la base de données : {e}")
+db.create_all()
         
 # ── Routes ─────────────────────────────────────────────────────────
 
